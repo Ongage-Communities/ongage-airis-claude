@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ongage-airis": {
+      "type": "http",
+      "url": "https://api.os.ongage.com/functions/v1/airisMcp"
+    }
+  }
+}
