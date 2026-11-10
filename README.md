@@ -14,4 +14,4 @@ Skills: `airis` (setup and working rules) and five work modes: `analyst`, `creat
 
 ## Data
 
-The skills are text only and run nothing on your computer. The connector sends your requests to Ongage Airis at api.os.ongage.com, which reads and changes your own Ongage account with the access you approved at sign-in. Privacy policy: https://airis.ongage.com/privacy. Support: support@ongage.com.
+The skills are text only and run nothing on your computer. The connector sends your requests to Ongage Airis at api.os.ongage.com, which reads and changes your own Ongage account with the access you approved at sign-in. Privacy policy: <https://airis.ongage.com/privacy>. Support: <https://airis.ongage.com/contact> or support@ongage.com.

@@ -1,11 +1,15 @@
 {
   "name": "ongage-airis",
   "displayName": "Ongage Airis",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Run your email and SMS marketing from Claude. Airis reads your results, builds segments, emails and automations in your brand, and sends and schedules them when you say yes.",
   "author": { "name": "Ongage", "url": "https://airis.ongage.com" },
   "homepage": "https://airis.ongage.com/claude",
   "privacyPolicyUrl": "https://airis.ongage.com/privacy",
+  "termsOfServiceUrl": "https://airis.ongage.com/terms",
+  "supportUrl": "https://airis.ongage.com/contact",
+  "documentationUrl": "https://airis.ongage.com/connect",
+  "repository": "https://github.com/Ongage-Communities/ongage-airis-claude",
   "icon": ".claude-plugin/icon.png",
   "license": "MIT"
 }
