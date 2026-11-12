@@ -1,7 +1,7 @@
 {
   "name": "ongage-airis",
   "displayName": "Ongage Airis",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Run your email and SMS marketing from Claude. Airis reads your results, builds segments, emails and automations in your brand, and sends and schedules them when you say yes.",
   "author": { "name": "Ongage", "url": "https://airis.ongage.com" },
   "homepage": "https://airis.ongage.com/claude",
