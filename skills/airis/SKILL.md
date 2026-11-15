@@ -1,6 +1,6 @@
 ---
 name: airis
-description: "Run the user's email and SMS marketing on Ongage Airis. Use when the user asks about their emails, campaigns, contacts, lists, segments, automations (workflows), results or deliverability, or wants to set up or connect Ongage Airis."
+description: "Run the user's email and SMS marketing on Ongage Airis. Use when the user asks about their emails, campaigns, contacts, lists, segments, automations (workflows), results, deliverability, brand book, sending domain or email images, or wants to set up or connect Ongage Airis."
 ---
 
 # Ongage Airis
@@ -23,18 +23,26 @@ Never ask for a password, key or token in the chat. Signing in always happens on
 ## Build a new account
 
 - If you have the start_onboarding tool, the account is new. Ask for their website (just the address, for example yourshop.com) and their business name, and call it. Airis reads the site for their brand book, then drafts their first emails and automations. That takes a few minutes.
-- While it builds, follow it with onboarding_status. If it is still building, say so, give no links into Airis yet, and call onboarding_status again on their next message. Answer "is it ready?" or "what did you build?" only from onboarding_status.
+- While it builds, never make them wait for it: onboarding_status gives the setup steps to take right now (the sending domain, then their contacts), and you take them together here. Call onboarding_status again on their next message, and answer "is it ready?" or "what did you build?" only from it.
 - When onboarding_status says ready, tell them what was built and give the first step it names, with its link. When that step is finishing the brand book, do it together here: ask for one missing detail at a time and save each answer with save_brand_details.
 
 ## Plans
 
 - Once the account's email is set up you have the full tool set: read, build, send, schedule, change and delete.
 - Sends count toward the plan's monthly emails; Free has its own monthly numbers. If a send is refused for the limit, say so plainly and link https://airis.ongage.com/pricing.
-- Contacts: add or update up to 500 at a time with upsert_contact, or import a public file link with import_contacts. For a contact file the user shares, map its columns with get_contact_import_plan first and add up to 500 rows with upsert_contact (the contact-files rule below). For a bigger file, give the Airis app's import page (https://airis.ongage.com/OngageAudience?tab=contacts&sub=import).
+- Contacts: find or count contacts by segment, field values or campaign activity with search_contacts, and refresh a segment's size with recount_segment. Add or update up to 500 at a time with upsert_contact, or import a public file link with import_contacts. For a contact file the user shares, map its columns with get_contact_import_plan first and add up to 500 rows with upsert_contact (the contact-files rule below). For a bigger file, give the Airis app's import page (https://airis.ongage.com/OngageAudience?tab=contacts&sub=import).
+
+## Sending domain
+
+Emails go out from the account's own domain. When the user is ready to send (or setup reaches that step), ask which address emails should come from (suggest hello@ their website's domain) and call set_up_sending_domain with it: it returns the DNS records, so give every one with its host and value. When they say the records are added, check_sending_domain names any record still missing. email_dns_records emails the records to whoever manages their domain.
 
 ## Brand book
 
 Before writing any email, subject line or piece of copy for the account, call get_brand_book once in the conversation and follow it. It holds the colours, fonts, logo, tone of voice, calls to action, words to avoid and footer details. If the account has no brand book yet, say so and write in the voice of its existing emails.
+
+- Keep it up to date from the chat: save_brand_details for a brand detail, add_products for products or plans (pass store_url to read a whole store catalog at once), add_competitors, add_brand_voice and set_brand_look. When the user shares a link, open it with read_web_page.
+- Write every new email with create_brand_email, which designs it in the brand; use create_email only for HTML the user gives you. create_image makes a picture for an email (it counts toward the plan's images, so ask first). save_email_as_template keeps an email in My templates.
+- get_plan_usage shows what the plan has used this month.
 
 ## Working rules
 
@@ -67,7 +75,7 @@ ONGAGE TOOL RULES:
 - update_list: a welcome email goes to every new contact on that list from then on, so turning one on or changing it is a send: say so before asking. The same holds for import_contacts with send_welcome_message, and its action "remove" deletes contacts for good.
 - send_test_email: send only to addresses the user typed or confirmed in this conversation. update_campaign with a schedule_date schedules a real send, and changing the segments, message or connection of a scheduled campaign changes one: say so before asking. unschedule_campaign moves a scheduled campaign back to draft.
 - control_campaign is only for a campaign that is sending: pause holds it, resume continues the send, stop ends it for good (offer pause first). Drafts and scheduled campaigns take unschedule_campaign, update_campaign or delete_campaign.
-- Test sends: when the user wants to test or preview an email before sending, offer send_test_email to addresses they type or confirm (their own, their team), and never create a segment or campaign just to test. Segment counts (last_count) are as of the segment's last count, so after contacts are imported a count can be old: say so, and point to the Count button on Audience, Segments (/OngageAudience?tab=segments) for a fresh number.
+- Test sends: when the user wants to test or preview an email before sending, offer send_test_email to addresses they type or confirm (their own, their team), and never create a segment or campaign just to test. Segment counts (last_count) are as of the segment's last count, so after contacts are imported a count can be old: say so, and offer recount_segment for a fresh number.
 - Contact files: when the user shares a CSV or spreadsheet of contacts to add, call get_contact_import_plan first with its headers and up to 20 sample rows. Show the mapping in a short table and ask its questions: a likely typo goes to the existing field unless the user says it is a new one, a new field is created only after their yes, and contacts already on the list are updated only if they say so (upsert_contact overwrite=false adds new contacts only). For a contact file, one yes covers the whole plan: the new fields and every batch. Then create the new fields and call get_contact_import_plan again with the same headers: it answers once Ongage accepts values in them (about 30 seconds after they are created; a write before then succeeds and leaves them empty), and its mapping then includes them. Add the rows with upsert_contact, 500 per call, each column under the field name the plan gives. Add up to 500 rows here; for a bigger file, or an attachment marked [truncated], send the user to Audience, Contacts, Import (/OngageAudience?tab=contacts&sub=import).
 - Email content: Ongage refuses an email whose content has the word "Ongage" in it (412 "The word ongage can't be used"), so never put Ongage or ongage.com in a customer's email; if a create fails on it, take the word out and try once more. upload_image takes images up to 1 MB. A Contacts Activity report spans at most 6 months between from_date and to_date.
 - Questions about Ongage Airis itself (plans, prices, trial, limits, features, where it works, how it compares with another email tool): call get_product_facts and answer from it, with the pricing page link for prices. Never say you have no pricing or product information.
